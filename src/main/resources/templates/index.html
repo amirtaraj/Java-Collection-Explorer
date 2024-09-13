@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Collection Explorer</title>
+    <script>
+        async function addUser() {
+            const name = document.getElementById("name").value;
+            const age = document.getElementById("age").value;
+
+            const response = await fetch("/api/users/add", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ name: name, age: age })
+            });
+
+            if (response.ok) {
+                alert("User added successfully");
+            } else {
+                alert("Failed to add user");
+            }
+        }
+
+        async function showCollections(collection) {
+            const response = await fetch(`/api/users/collections/${collection}`);
+            const data = await response.json();
+            document.getElementById(collection).textContent = JSON.stringify(data, null, 2);
+        }
+    </script>
+</head>
+<body>
+
+    <h1>Collection Explorer</h1>
+
+    <h2>Add User</h2>
+    <input type="text" id="name" placeholder="Name" />
+    <input type="number" id="age" placeholder="Age" />
+    <button onclick="addUser()">Add User</button>
+
+    <h2>View Collections</h2>
+    <button onclick="showCollections('hashmap')">Show HashMap</button>
+    <pre id="hashmap"></pre>
+
+    <button onclick="showCollections('linkedlist')">Show LinkedList</button>
+    <pre id="linkedlist"></pre>
+
+    <button onclick="showCollections('arraylist')">Show ArrayList</button>
+    <pre id="arraylist"></pre>
+
+    <button onclick="showCollections('hashset')">Show HashSet</button>
+    <pre id="hashset"></pre>
+
+    <button onclick="showCollections('treeset')">Show TreeSet</button>
+    <pre id="treeset"></pre>
+
+</body>
+</html>
